@@ -47,6 +47,26 @@ def parse_text_header(segyfile):
         clean_header[key] = item
     return clean_header
 
+def plot_segy(file):
+   # Load data
+   with segyio.open(file, ignore_geometry=True) as f:
+      # Get basic attributes
+      n_traces = f.tracecount
+      sample_rate = segyio.tools.dt(f) / 1000
+      n_samples = f.samples.size
+      twt = f.samples
+      data = f.trace.raw[:]
+   # Plot
+   plt.style.use('ggplot')  # Use ggplot styles for all plotting
+   vm = np.percentile(data, 98)
+   fig = plt.figure(figsize=(18, 8))
+   ax = fig.add_subplot(1, 1, 1)
+   extent = [1, n_traces, twt[-1], twt[0]]  # define extent
+   ax.imshow(data.T, cmap="RdBu", vmin=-vm, vmax=vm, aspect='auto', extent=extent)
+   ax.set_xlabel('CDP number')
+   ax.set_ylabel('TWT [ms]')
+   ax.set_title(f'{file}')
+   return fig
 
 def write_data_to_session_state(data):
    with open(temp_in,'wb') as out: ## Open temporary file as bytes and store to temp location
@@ -98,9 +118,19 @@ if st.session_state["sgy"] is not None:
       u, indices = np.unique(st.session_state["data"] , return_index=True, axis=0)
       n_duplicates = len(st.session_state["data"]) - len(u)
       if n_duplicates == 0:
-         st.write("No duplicates found, returned segy is identical to input")
+         st.write("No duplicate traces found, returned segy is identical to input")
       else:
          st.write(f"{n_duplicates} duplicates found")
+      df =trace_head[trace_head.duplicated(keep='first')]
+      if len(df) == 0:
+         st.write("No duplicate headers found")
+      else:
+         st.write("Duplicate headers:")
+         st.dataframe(df)
       copy_data_to_new_sgy(indices)
       with open(temp_out,'rb') as out:
-         st.download_button(label = "Download segy file", data = out, file_name=f"{clean_segy_name(st.session_state['sgy'].name)}", mime='application/octet-stream', key='download-sgy')
+         st.download_button(label = "Download clean segy file", data = out, file_name=f"{clean_segy_name(st.session_state['sgy'].name)}", mime='application/octet-stream', key='download-sgy')
+   st.divider()
+   if st.button("Plot input segy"):
+      fig = plot_segy(temp_in)
+      st.pyplot(fig)
