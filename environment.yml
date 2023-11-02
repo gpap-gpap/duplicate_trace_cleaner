@@ -1,0 +1,14 @@
+name: segy-fixer
+channels:
+  - defaults
+dependencies:
+  - python=3.9
+  - numpy
+  - jupyter
+  - matplotlib
+  - pandas
+  - streamlit=1.28.0
+  - pip
+  - pip:
+      - segyio
+prefix: /Users/gpapageo/opt/anaconda3/envs/segy-fixer
