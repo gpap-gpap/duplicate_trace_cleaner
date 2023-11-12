@@ -147,7 +147,7 @@ if st.session_state["sgy"] is not None:
             st.write("No duplicate CDP X-Y combination found")
         else:
             st.write("Duplicate CDP X-Y headers:")
-            st.write(f"{indices} vs {df.index.to_numpy()}")
+            st.write(f"{len(indices)} vs {len(df.index.to_numpy())}")
             st.dataframe(df)
         copy_data_to_new_sgy(indices)
 
