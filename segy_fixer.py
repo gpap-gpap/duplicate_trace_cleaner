@@ -143,7 +143,7 @@ if st.session_state["sgy"] is not None:
             st.write(f"{n_duplicates} duplicates found")
         #   st.dataframe(trace_head)
         df = trace_head[
-            not trace_head.duplicated(subset=["CDP_X", "CDP_Y"], keep="first")
+            not any(trace_head.duplicated(subset=["CDP_X", "CDP_Y"], keep="first"))
         ]
         if len(df) == 0:
             st.write("No duplicate CDP X-Y combination found")
