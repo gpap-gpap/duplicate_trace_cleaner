@@ -141,8 +141,8 @@ if st.session_state["sgy"] is not None:
             st.write("No duplicate traces found, returned segy is identical to input")
         else:
             st.write(f"{n_duplicates} duplicates found")
-        st.dataframe(trace_head)
-        df = trace_head[trace_head.duplicated(keep="first")]
+        #   st.dataframe(trace_head)
+        df = trace_head[trace_head.duplicated(subset=["CDP_X", "CDP_Y"], keep="first")]
         if len(df) == 0:
             st.write("No duplicate headers found")
         else:
