@@ -144,11 +144,13 @@ if st.session_state["sgy"] is not None:
         #   st.dataframe(trace_head)
         df = trace_head[trace_head.duplicated(subset=["CDP_X", "CDP_Y"], keep="first")]
         if len(df) == 0:
-            st.write("No duplicate headers found")
+            st.write("No duplicate CDP X-Y combination found")
         else:
-            st.write("Duplicate headers:")
+            st.write("Duplicate CDP X-Y headers:")
+            st.write(f"{indices} vs {df.index.to_numpy()}")
             st.dataframe(df)
         copy_data_to_new_sgy(indices)
+
         with open(temp_out, "rb") as out:
             st.download_button(
                 label="Download clean segy file",
