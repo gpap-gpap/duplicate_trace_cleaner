@@ -154,6 +154,15 @@ if st.session_state["sgy"] is not None:
         #     st.write(f"{len(indices)} vs {len(df.index.to_numpy())}")
         #     st.dataframe(df)
         copy_data_to_new_sgy(indices)
+        col1, col2 = st.columns(2)
+        with col1:
+            st.write("Soparse spike inversion")
+            fig = plot_segy(temp_in)
+            st.pyplot(fig)
+        with col2:
+            st.write("FWI inverion")
+            fig = plot_segy(temp_out)
+            st.pyplot(fig)
 
         with open(temp_out, "rb") as out:
             st.download_button(
