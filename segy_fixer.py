@@ -5,6 +5,7 @@ import segyio
 import matplotlib.pyplot as plt
 import re
 
+st.set_page_config(layout="wide")
 temp_in = "temp-in"
 temp_out = "temp-out"
 if "sgy" not in st.session_state:
@@ -134,9 +135,9 @@ if st.session_state["sgy"] is not None:
         trace_head,
     ) = write_data_to_session_state(st.session_state["sgy"])
     display_diagnostics(n_traces, n_samples, sample_rate, twt, text_head)
-    if temp_in is not None:
-        fig = plot_segy(temp_in)
-        st.pyplot(fig)
+    # if temp_in is not None:
+    #     fig = plot_segy(temp_in)
+    #     st.pyplot(fig)
     if st.button("Compare traditional and PWI inversion results"):
         # if st.button("Delete duplicate traces and generate clean segy"):
         u, indices = np.unique(st.session_state["data"], return_index=True, axis=0)
@@ -156,7 +157,7 @@ if st.session_state["sgy"] is not None:
         copy_data_to_new_sgy(indices)
         col1, col2 = st.columns(2)
         with col1:
-            st.write("Soparse spike inversion")
+            st.write("Sparse spike inversion")
             fig = plot_segy(temp_in)
             st.pyplot(fig)
         with col2:
