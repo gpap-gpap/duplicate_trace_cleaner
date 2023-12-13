@@ -141,18 +141,18 @@ if st.session_state["sgy"] is not None:
         # if st.button("Delete duplicate traces and generate clean segy"):
         u, indices = np.unique(st.session_state["data"], return_index=True, axis=0)
         n_duplicates = len(st.session_state["data"]) - len(u)
-        if n_duplicates == 0:
-            st.write("No duplicate traces found, returned segy is identical to input")
-        else:
-            st.write(f"{n_duplicates} duplicates found")
-        #   st.dataframe(trace_head)
-        df = trace_head[trace_head.duplicated(subset=["CDP_X", "CDP_Y"], keep="first")]
-        if len(df) == 0:
-            st.write("No duplicate CDP X-Y combination found")
-        else:
-            st.write("Duplicate CDP X-Y headers:")
-            st.write(f"{len(indices)} vs {len(df.index.to_numpy())}")
-            st.dataframe(df)
+        # if n_duplicates == 0:
+        #     st.write("D")
+        # else:
+        #     st.write(f"{n_duplicates} duplicates found")
+        # #   st.dataframe(trace_head)
+        # df = trace_head[trace_head.duplicated(subset=["CDP_X", "CDP_Y"], keep="first")]
+        # if len(df) == 0:
+        #     st.write("No duplicate CDP X-Y combination found")
+        # else:
+        #     st.write("Duplicate CDP X-Y headers:")
+        #     st.write(f"{len(indices)} vs {len(df.index.to_numpy())}")
+        #     st.dataframe(df)
         copy_data_to_new_sgy(indices)
 
         with open(temp_out, "rb") as out:
