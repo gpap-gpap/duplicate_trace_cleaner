@@ -134,7 +134,11 @@ if st.session_state["sgy"] is not None:
         trace_head,
     ) = write_data_to_session_state(st.session_state["sgy"])
     display_diagnostics(n_traces, n_samples, sample_rate, twt, text_head)
-    if st.button("Delete duplicate traces and generate clean segy"):
+    if temp_in is not None:
+        fig = plot_segy(temp_in)
+        st.pyplot(fig)
+    if st.button("Compare traditional and PWI inversion results"):
+        # if st.button("Delete duplicate traces and generate clean segy"):
         u, indices = np.unique(st.session_state["data"], return_index=True, axis=0)
         n_duplicates = len(st.session_state["data"]) - len(u)
         if n_duplicates == 0:
@@ -142,9 +146,7 @@ if st.session_state["sgy"] is not None:
         else:
             st.write(f"{n_duplicates} duplicates found")
         #   st.dataframe(trace_head)
-        df = trace_head[
-            not any(trace_head.duplicated(subset=["CDP_X", "CDP_Y"], keep="first"))
-        ]
+        df = trace_head[trace_head.duplicated(subset=["CDP_X", "CDP_Y"], keep="first")]
         if len(df) == 0:
             st.write("No duplicate CDP X-Y combination found")
         else:
@@ -161,7 +163,7 @@ if st.session_state["sgy"] is not None:
                 mime="application/octet-stream",
                 key="download-sgy",
             )
-    st.divider()
-    if st.button("Plot input segy"):
-        fig = plot_segy(temp_in)
-        st.pyplot(fig)
+    # st.divider()
+    # if st.button("Plot input segy"):
+    #     fig = plot_segy(temp_in)
+    #     st.pyplot(fig)
