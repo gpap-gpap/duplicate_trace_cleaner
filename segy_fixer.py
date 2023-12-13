@@ -161,7 +161,7 @@ if st.session_state["sgy"] is not None:
             st.pyplot(fig)
         with col2:
             st.write("FWI inverion")
-            fig = plot_segy(temp_out)
+            fig = plot_segy(temp_in)
             st.pyplot(fig)
 
         with open(temp_out, "rb") as out:
