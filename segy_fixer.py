@@ -119,7 +119,7 @@ def clean_segy_name(name: str):
     return n + "_clean." + ext
 
 
-st.title("SEGY Duplicate Trace Cleaner")
+st.title("Phased Wavelet Inversion demo")
 st.session_state["sgy"] = st.file_uploader(
     "First upload SEGY file (might not work with large files)", type=["sgy", "segy"]
 )
@@ -157,7 +157,7 @@ if st.session_state["sgy"] is not None:
 
         with open(temp_out, "rb") as out:
             st.download_button(
-                label="Download clean segy file",
+                label="Download inversion results",
                 data=out,
                 file_name=f"{clean_segy_name(st.session_state['sgy'].name)}",
                 mime="application/octet-stream",
